@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <WiFi.h>
+#include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 #include <HTTPUpdate.h>
 
@@ -16,13 +17,11 @@ IPAddress secondaryDNS(8, 8, 4, 4);
 const char* serverIP = "192.168.200.2"; 
 const int serverPort = 8000;
 
-const int currentVersion = 2;
-const char* versionUrl = "http://192.168.200.2:8000/version.txt";
-const char* firmwareUrl = "http://192.168.200.2:8000/firmware.bin";
+const int currentVersion = 3;
+const char* versionUrl = "https://raw.githubusercontent.com/anisamsrh/webserver-ota/main/webserver/version.txt";
+const char* firmwareUrl = "http://raw.githubusercontent.com/anisamsrh/webserver-ota/ota-github/ota/firmware.bin";
 
-
-
-void performUpdate(WiFiClient &client) {
+void performUpdate(WiFiClientSecure &client) {
   // Callback untuk progress (opsional)
   httpUpdate.onProgress([](int cur, int total) {
       Serial.printf("Progress: %d%%\n", (cur * 100) / total);
@@ -48,7 +47,8 @@ void performUpdate(WiFiClient &client) {
 void checkOTAUpdate() {
   Serial.println("Checking for updates...");
   
-  WiFiClient client;
+  WiFiClientSecure client;
+  client.setInsecure();
   HTTPClient http;
   
   http.begin(client, versionUrl);
@@ -98,7 +98,6 @@ void setup() {
 }
 
 void loop() {
-  // Kode utama proyekmu disini
-  // ...
+  Serial.println("Hi");
   delay(1000); 
 }
