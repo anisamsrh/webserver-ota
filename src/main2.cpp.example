@@ -1,0 +1,45 @@
+#include <WiFi.h>
+#include <ESP32Ping.h>
+
+const char* ssid     = "b401_wifi";
+const char* password = "b401juara1";
+
+// setting IP 
+const char* remote_ip = "192.168.200.2"; 
+IPAddress local_IP(192,168,200,3);
+IPAddress gateway(192,168,200,1);
+IPAddress subnet(255, 255, 255, 0);
+IPAddress primaryDNS(8, 8, 8, 8); 
+IPAddress secondaryDNS(8, 8, 4, 4);
+
+void setup() {
+  Serial.begin(115200);
+  
+  // Koneksi WiFi
+  if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
+    Serial.println("Gagal set Static IP!");
+  }
+  WiFi.begin(ssid, password);
+  Serial.print("Menghubungkan ke WiFi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println();
+  Serial.print("Terhubung! IP ESP32: ");
+  Serial.println(WiFi.localIP());
+
+  // Mulai Test Ping ke Laptop
+  Serial.print("Mencoba ping ke laptop: ");
+  Serial.println(remote_ip);
+
+  if (Ping.ping(remote_ip)) {
+    Serial.println("BERHASIL! Laptop merespon.");
+  } else {
+    Serial.println("GAGAL! Laptop tidak merespon/terblokir.");
+  }
+}
+
+void loop() {
+  // Kosongkan saja, kita hanya cek sekali di awal
+}
