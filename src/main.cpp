@@ -3,10 +3,11 @@
 #include <WiFiClientSecure.h>
 #include <HTTPClient.h>
 #include <HTTPUpdate.h>
+#include <secrets.h>
 
 // --- KONFIGURASI WIFI ---
-const char* ssid     = "b401_wifi";
-const char* password = "b401juara1";
+const char* ssid     = WIFI_SSID;
+const char* password = WIFI_PASS;
 IPAddress local_IP(192,168,200,3);
 IPAddress gateway(192,168,200,1);
 IPAddress subnet(255, 255, 255, 0);
@@ -14,12 +15,9 @@ IPAddress primaryDNS(8, 8, 8, 8);
 IPAddress secondaryDNS(8, 8, 4, 4);
 
 // --- KONFIGURASI OTA ---
-const char* serverIP = "192.168.200.2"; 
-const int serverPort = 8000;
-
-const int currentVersion = 3;
-const char* versionUrl = "https://raw.githubusercontent.com/anisamsrh/webserver-ota/main/webserver/version.txt";
-const char* firmwareUrl = "http://raw.githubusercontent.com/anisamsrh/webserver-ota/ota-github/ota/firmware.bin";
+const int currentVersion = 2;
+const char* versionUrl = VERSION_URL;
+const char* firmwareUrl = FIRMWARE_URl;
 
 void performUpdate(WiFiClientSecure &client) {
   // Callback untuk progress (opsional)
@@ -98,6 +96,5 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("Hi");
   delay(1000); 
 }
